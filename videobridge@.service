@@ -1,0 +1,25 @@
+[Unit]
+Description=Jitsi Videobridge
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+EnvironmentFile=/etc/environment
+ExecStartPre=-/usr/bin/docker kill videobridge
+ExecStartPre=-/usr/bin/docker rm videobridge
+ExecStartPre=/usr/bin/docker pull jvliwanag/videobridge:latest
+ExecStart=/usr/bin/docker run --rm --name videobridge \
+  -e PRIVATE_IP=$COREOS_PRIVATE_IPV4 \
+  -e PUBLIC_IP=$COREOS_PUBLIC_IPV4 \
+  --net host \
+  jvliwanag/videobridge:latest \
+    --domain=connecter.io \
+    --host=172.17.42.1 \
+    --port=8889 \
+    --subdomain=videobridge \
+    --secret=secret
+ExecStop=/usr/bin/docker stop videobridge
+
+[X-Fleet]
+Conflicts=videobridge@*.service

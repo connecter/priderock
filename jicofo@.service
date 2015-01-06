@@ -1,0 +1,23 @@
+[Unit]
+Description=Jitsi Conference Focus
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill jicofo
+ExecStartPre=-/usr/bin/docker rm jicofo
+ExecStartPre=/usr/bin/docker pull jvliwanag/jicofo:latest
+ExecStart=/usr/bin/docker run --rm --name jicofo -h jicofo@%i \
+  jvliwanag/jicofo:latest \
+    --domain=connecter.io \
+    --host=172.17.42.1 \
+    --port=8888 \
+    --subdomain=focus \
+    --secret=secret \
+    --user_domain=connecter.io \
+    --user_name=focus
+ExecStop=/usr/bin/docker stop jicofo
+
+[X-Fleet]
+Conflicts=jicofo@*.service
