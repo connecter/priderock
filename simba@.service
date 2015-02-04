@@ -7,10 +7,13 @@ Requires=docker.service
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill simba
 ExecStartPre=-/usr/bin/docker rm simba
-ExecStartPre=/usr/bin/docker pull jvliwanag/simba:latest
-ExecStart=/usr/bin/docker run --rm --name simba -h simba@%i.service \
+ExecStartPre=/usr/bin/docker pull connecter/simba:staging
+ExecStart=/usr/bin/docker run --rm \
+  --name simba \
+  -h simba-%i \
   -p 80:80 \
-  jvliwanag/simba:latest
+  -e XMPP_BIND_URL="http://172.17.42.1:5280/http-bind/" \
+  connecter/simba:staging
 ExecStop=/usr/bin/docker stop simba
 
 [X-Fleet]
