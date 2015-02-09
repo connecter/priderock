@@ -7,14 +7,14 @@ Requires=docker.service
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill zazu
 ExecStartPre=-/usr/bin/docker rm zazu
-ExecStartPre=/usr/bin/docker pull jvliwanag/zazu:latest
+ExecStartPre=/usr/bin/docker pull connecter/zazu:latest
 ExecStart=/usr/bin/docker run --rm --name zazu -h zazu@%i.service \
   -p 5222:5222 \
   -p 5280:5280 \
   -p 8888:8888 \
   -p 8889:8889 \
   -ti \
-  jvliwanag/zazu:latest
+  connecter/zazu:latest
 ExecStop=/usr/bin/docker stop zazu
 
 [X-Fleet]

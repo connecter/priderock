@@ -8,12 +8,12 @@ TimeoutStartSec=0
 EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill videobridge
 ExecStartPre=-/usr/bin/docker rm videobridge
-ExecStartPre=/usr/bin/docker pull jvliwanag/videobridge:latest
+ExecStartPre=/usr/bin/docker pull connecter/videobridge:latest
 ExecStart=/usr/bin/docker run --rm --name videobridge \
   -e PRIVATE_IP=$COREOS_PRIVATE_IPV4 \
   -e PUBLIC_IP=$COREOS_PUBLIC_IPV4 \
   --net host \
-  jvliwanag/videobridge:latest \
+  connecter/videobridge:latest \
     --domain=connecter.io \
     --host=172.17.42.1 \
     --port=8889 \

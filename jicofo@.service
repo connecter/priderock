@@ -7,9 +7,9 @@ Requires=docker.service
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill jicofo
 ExecStartPre=-/usr/bin/docker rm jicofo
-ExecStartPre=/usr/bin/docker pull jvliwanag/jicofo:latest
+ExecStartPre=/usr/bin/docker pull connecter/jicofo:latest
 ExecStart=/usr/bin/docker run --rm --name jicofo -h jicofo@%i \
-  jvliwanag/jicofo:latest \
+  connecter/jicofo:latest \
     --domain=connecter.io \
     --host=172.17.42.1 \
     --port=8888 \
