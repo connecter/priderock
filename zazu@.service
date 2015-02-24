@@ -5,6 +5,7 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
+StandardInput=tty-force
 ExecStartPre=-/usr/bin/docker kill zazu
 ExecStartPre=-/usr/bin/docker rm zazu
 ExecStartPre=/usr/bin/docker pull connecter/zazu:latest
