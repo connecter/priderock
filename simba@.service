@@ -5,6 +5,7 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
+Restart=on-failure
 ExecStartPre=-/usr/bin/docker kill simba
 ExecStartPre=-/usr/bin/docker rm simba
 ExecStartPre=/usr/bin/docker pull connecter/simba:staging

@@ -5,6 +5,7 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
+Restart=on-failure
 EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill videobridge
 ExecStartPre=-/usr/bin/docker rm videobridge

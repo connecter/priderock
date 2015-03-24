@@ -5,6 +5,7 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
+Restart=on-failure
 StandardInput=tty-force
 ExecStartPre=-/usr/bin/docker kill zazu
 ExecStartPre=-/usr/bin/docker rm zazu

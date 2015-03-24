@@ -5,6 +5,7 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
+Restart=on-failure
 ExecStartPre=-/usr/bin/docker kill jicofo
 ExecStartPre=-/usr/bin/docker rm jicofo
 ExecStartPre=/usr/bin/docker pull connecter/jicofo:latest
