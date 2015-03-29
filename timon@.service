@@ -16,7 +16,8 @@ ExecStart=/bin/bash -c '\
   -p 443:443 \
   -p 80:80 \
   -e SIMBA_HOST=172.17.42.1:8000 \
-  -e ZAZUWS_HOST=172.17.42.1:5280  \
+  -e ZAZUWS_HOST=172.17.42.1:5280 \
+  -e SITE_HOST=172.17.42.1:8001 \
   -e SSL_KEY="$(etcdctl get /ssl/connecter.io/server.pem)" \
   connecter/timon:latest'
 ExecStop=/usr/bin/docker stop timon
