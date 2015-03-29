@@ -11,10 +11,11 @@ ExecStartPre=-/usr/bin/docker kill videobridge
 ExecStartPre=-/usr/bin/docker rm videobridge
 ExecStartPre=/usr/bin/docker pull connecter/videobridge:latest
 ExecStart=/usr/bin/docker run --rm --name videobridge \
-  -e PRIVATE_IP=$COREOS_PRIVATE_IPV4 \
-  -e PUBLIC_IP=$COREOS_PUBLIC_IPV4 \
   --net host \
   connecter/videobridge:latest \
+    --x-org.jitsi.impl.neomedia.transform.srtp.SRTPCryptoContext.checkReplay=false \
+    --x-org.jitsi.videobridge.NAT_HARVESTER_PRIVATE_ADDRESS=$COREOS_PRIVATE_IPV4 \
+    --x-org.jitsi.videobridge.NAT_HARVESTER_PUBLIC_ADDRESS=$COREOS_PUBLIC_IPV4 \
     --domain=connecter.io \
     --host=172.17.42.1 \
     --port=8889 \
