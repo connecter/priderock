@@ -1,0 +1,25 @@
+[Unit]
+Description=Timon Service Proxy
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+EnvironmentFile=/etc/environment
+ExecStartPre=-/usr/bin/docker kill timon
+ExecStartPre=-/usr/bin/docker rm timon
+ExecStartPre=/usr/bin/docker pull connecter/timon:latest
+
+ExecStart=/bin/bash -c '\
+  /usr/bin/docker run --rm --name timon \
+  -p 443:443 \
+  -p 80:80 \
+  -e SIMBA_HOST=172.17.42.1:8000 \
+  -e ZAZUWS_HOST=172.17.42.1:5280  \
+  -e SSL_KEY="$(etcdctl get /ssl/connecter.io/server.pem)" \
+  connecter/timon:latest'
+ExecStop=/usr/bin/docker stop timon
+
+[X-Fleet]
+Conflicts=timon@*.service
