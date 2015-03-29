@@ -1,0 +1,20 @@
+[Unit]
+Description=Site UI
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill site
+ExecStartPre=-/usr/bin/docker rm site
+ExecStartPre=/usr/bin/docker pull connecter/site:staging
+ExecStart=/usr/bin/docker run --rm \
+  --name site \
+  -h site-%i \
+  -p 8001:80 \
+  connecter/site:staging
+ExecStop=/usr/bin/docker stop site
+
+[X-Fleet]
+Conflicts=site@*.service
