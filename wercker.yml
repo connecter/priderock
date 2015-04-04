@@ -30,4 +30,8 @@ deploy:
 
     - script:
        name: submit service files
-       code: ssh -i $PRIVATEKEY_PATH -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no www.connecter.io "fleetctl stop simba@1.service && fleetctl submit videobridge@.service"
+       code: |
+         ssh -i $PRIVATEKEY_PATH -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no www.connecter.io "fleetctl stop simba@1.service && fleetctl submit zazu@.service"
+         ssh -i $PRIVATEKEY_PATH -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no www.connecter.io "fleetctl stop simba@1.service && fleetctl submit videobridge@.service"
+         ssh -i $PRIVATEKEY_PATH -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no www.connecter.io "fleetctl stop simba@1.service && fleetctl submit simba@.service"
+         ssh -i $PRIVATEKEY_PATH -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no www.connecter.io "fleetctl stop simba@1.service && fleetctl submit jicofo@.service"
