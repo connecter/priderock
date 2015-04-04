@@ -1,0 +1,28 @@
+box: wercker/default
+
+build:
+  steps:
+
+    - script:
+        name: list files
+        code: |
+          ls -l
+
+deploy:
+  steps:
+    - add-to-known_hosts:
+        hostname: www.connecter.io
+
+    - mktemp:
+       envvar: PRIVATEKEY_PATH
+
+    - create-file:
+       name: write key
+       filename: $PRIVATEKEY_PATH
+       content: $FLEET_DEPLOY_KEY_PRIVATE
+       overwrite: true
+       hide-from-log: true
+
+    - script:
+       name: submit service files
+       code: ssh -i $PRIVATEKEY_PATH -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no www.connecter.io "fleetctl stop simba@1.service && fleetctl submit videobridge@.service"
