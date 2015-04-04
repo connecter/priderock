@@ -1,0 +1,22 @@
+[Unit]
+Description=Jitsi SIP gateway
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill jigasi
+ExecStartPre=-/usr/bin/docker rm jigasi
+ExecStartPre=/usr/bin/docker pull connecter/jigasi:latest
+ExecStart=/usr/bin/docker run --rm --name jigasi -h jigasi@%i \
+  connecter/jigasi:latest \
+    --domain=connecter.io \
+    --host=172.17.42.1 \
+    --port=8888 \
+    --subdomain=callcontrol \
+    --secret=secret
+ExecStop=/usr/bin/docker stop jigasi
+
+[X-Fleet]
+Conflicts=jigasi@*.service
