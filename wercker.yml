@@ -24,5 +24,10 @@ deploy:
        hide-from-log: true
 
     - script:
+        name: list files
+        code: |
+          ls -l
+
+    - script:
        name: submit service files
        code: ssh -i $PRIVATEKEY_PATH -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no www.connecter.io "fleetctl stop simba@1.service && fleetctl submit videobridge@.service"
