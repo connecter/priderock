@@ -1,0 +1,26 @@
+[Unit]
+Description=Shenzi Web Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+EnvironmentFile=/etc/environment
+ExecStartPre=-/usr/bin/docker kill shenzi
+ExecStartPre=-/usr/bin/docker rm shenzi
+ExecStartPre=/usr/bin/docker pull connecter/shenzi:staging
+
+ExecStart=/bin/bash -c '\
+  /usr/bin/docker run \
+  --rm \
+  --name shenzi \
+  -p 9000:9000 \
+  -e SMTP_USER="$(etcdctl get /config/shenzi/smtp-user)" \
+  -e SMTP_PASSWORD="$(etcdctl get /config/shenzi/smtp-password)" \
+  -e SMTP_FROM="$(etcdctl get /config/shenzi/smtp-from)" \
+  connecter/shenzi:staging'
+ExecStop=/usr/bin/docker stop shenzi
+
+[X-Fleet]
+Conflicts=shenzi@*.service
