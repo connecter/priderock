@@ -19,8 +19,10 @@ ExecStart=/bin/bash -c '\
   -e SMTP_USER="$(etcdctl get /config/shenzi/smtp-user)" \
   -e SMTP_PASSWORD="$(etcdctl get /config/shenzi/smtp-password)" \
   -e SMTP_FROM="$(etcdctl get /config/shenzi/smtp-from)" \
+  -e CONTACTUS_TO="$(etcdctl get /config/shenzi/contactus-to)" \
   connecter/shenzi:staging'
 ExecStop=/usr/bin/docker stop shenzi
 
 [X-Fleet]
 Conflicts=shenzi@*.service
+
