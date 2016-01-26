@@ -9,9 +9,10 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_2ed4c54efd46_key -iv $encrypted_2ed4c54efd46_iv
   -in connecter-docker.pem.enc -out connecter-docker.pem -d
 - chmod 600 connecter-docker.pem
+- ls -l
 
 install:
-- scp -i connecter-docker.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no *.service core@$HOSTNAME:.
+- scp -i connecter-docker.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no *.service core@www.connecter.io:.
 
 - ssh -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $HOSTNAME "fleetctl stop simba@1.service && fleetctl submit simba@.service && fleetctl start simba@1.service"
 
