@@ -1,0 +1,26 @@
+addons:
+  ssh_known_hosts:
+  - www.connecter.io
+
+env:
+- HOSTNAME = www.connecter.io
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_2ed4c54efd46_key -iv $encrypted_2ed4c54efd46_iv
+  -in connecter-docker.pem.enc -out connecter-docker.pem -d
+
+after_success:
+- scp -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no *@.service $HOSTNAME:.
+
+- ssh -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $HOSTNAME "fleetctl stop simba@1.service && fleetctl submit simba@.service && fleetctl start simba@1.service"
+
+- ssh -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $HOSTNAME "fleetctl stop videobridge@1.service && fleetctl submit videobridge@.service && fleetctl start videobridge@1.service"
+
+- ssh -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $HOSTNAME "fleetctl stop zazu@1.service && fleetctl submit zazu@.service && fleetctl start zazu@1.service"
+
+- ssh -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $HOSTNAME "fleetctl stop timon@1.service && fleetctl submit timon@.service && fleetctl start timon@1.service"
+
+- ssh -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $HOSTNAME "fleetctl stop site@1.service && fleetctl submit site@.service && fleetctl start site@1.service"
+
+- ssh -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $HOSTNAME "fleetctl stop jicofo@1.service && fleetctl submit jicofo@.service && fleetctl start jicofo@1.service"
+
