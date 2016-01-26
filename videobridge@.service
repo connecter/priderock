@@ -2,6 +2,8 @@
 Description=Jitsi Videobridge
 After=docker.service
 Requires=docker.service
+After=zazu.service
+Requires=zazu.service
 
 [Service]
 TimeoutStartSec=0
@@ -9,22 +11,17 @@ Restart=on-failure
 EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill videobridge
 ExecStartPre=-/usr/bin/docker rm videobridge
-ExecStartPre=/usr/bin/docker pull connecter/videobridge:latest
+ExecStartPre=/usr/bin/docker pull connecter/videobridge:travis
 ExecStart=/bin/bash -c '\
   /usr/bin/docker run --rm --name videobridge \
   --net host \
-  connecter/videobridge:latest \
+  connecter/videobridge:travis \
     --x-org.jitsi.impl.neomedia.transform.srtp.SRTPCryptoContext.checkReplay=false \
     --x-org.jitsi.videobridge.rtcp.strategy=HighestQualityRTCPTerminationStrategy \
     --x-org.jitsi.videobridge.NAT_HARVESTER_PRIVATE_ADDRESS=${COREOS_PRIVATE_IPV4} \
     --x-org.jitsi.videobridge.NAT_HARVESTER_PUBLIC_ADDRESS=${COREOS_PUBLIC_IPV4} \
     --x-org.jitsi.videobridge.TCP_HARVESTER_PORT=4443 \
     --x-org.jitsi.videobridge.TCP_HARVESTER_MAPPED_PORT=4443 \
-    --x-org.jitsi.videobridge.log.INFLUX_DB_ENABLED=true \
-    --x-org.jitsi.videobridge.log.INFLUX_URL_BASE="$(etcdctl get /config/videobridge/influxdb-url-base)" \
-    --x-org.jitsi.videobridge.log.INFLUX_DATABASE="$(etcdctl get /config/videobridge/influxdb-database)" \
-    --x-org.jitsi.videobridge.log.INFLUX_USER="$(etcdctl get /config/videobridge/influxdb-user)" \
-    --x-org.jitsi.videobridge.log.INFLUX_PASS="$(etcdctl get /config/videobridge/influxdb-pass)" \
     --domain=connecter.io \
     --host=172.17.42.1 \
     --port=8889 \

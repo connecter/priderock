@@ -2,19 +2,21 @@
 Description=Simba UI
 After=docker.service
 Requires=docker.service
+After=zazu.service
+Requires=zazu.service
 
 [Service]
 TimeoutStartSec=0
 Restart=on-failure
 ExecStartPre=-/usr/bin/docker kill simba
 ExecStartPre=-/usr/bin/docker rm simba
-ExecStartPre=/usr/bin/docker pull connecter/simba:staging
+ExecStartPre=/usr/bin/docker pull connecter/simba:travis
 ExecStart=/usr/bin/docker run --rm \
   --name simba \
   -h simba-%i \
   -p 8000:80 \
   -e XMPP_BIND_URL="http://172.17.42.1:5280/http-bind/" \
-  connecter/simba:staging
+  connecter/simba:travis
 ExecStop=/usr/bin/docker stop simba
 
 [X-Fleet]

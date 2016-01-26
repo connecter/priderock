@@ -8,12 +8,12 @@ TimeoutStartSec=0
 Restart=on-failure
 ExecStartPre=-/usr/bin/docker kill site
 ExecStartPre=-/usr/bin/docker rm site
-ExecStartPre=/usr/bin/docker pull connecter/site:staging
+ExecStartPre=/usr/bin/docker pull connecter/site:travis
 ExecStart=/usr/bin/docker run --rm \
   --name site \
   -h site-%i \
   -p 8001:80 \
-  connecter/site:staging
+  connecter/site:travis
 ExecStop=/usr/bin/docker stop site
 
 [X-Fleet]

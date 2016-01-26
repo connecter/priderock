@@ -2,20 +2,17 @@
 Description=Jitsi Conference Focus
 After=docker.service
 Requires=docker.service
+After=zazu.service
+Requires=zazu.service
 
 [Service]
 TimeoutStartSec=0
 Restart=on-failure
 ExecStartPre=-/usr/bin/docker kill jicofo
 ExecStartPre=-/usr/bin/docker rm jicofo
-ExecStartPre=/usr/bin/docker pull connecter/jicofo:latest
+ExecStartPre=/usr/bin/docker pull connecter/jicofo:travis
 ExecStart=/usr/bin/docker run --rm --name jicofo -h jicofo@%i \
-  connecter/jicofo:latest \
-    --x-org.jitsi.videobridge.log.INFLUX_DB_ENABLED=true \
-    --x-org.jitsi.videobridge.log.INFLUX_URL_BASE=principalstrickland-density-1.c.influxdb.com:8086 \
-    --x-org.jitsi.videobridge.log.INFLUX_DATABASE=connecter \
-    --x-org.jitsi.videobridge.log.INFLUX_USER=connecter \
-    --x-org.jitsi.videobridge.log.INFLUX_PASS=GVF4JgB6rTjAsr \
+  connecter/jicofo:travis \
     --domain=connecter.io \
     --host=172.17.42.1 \
     --port=8888 \

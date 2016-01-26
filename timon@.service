@@ -9,7 +9,7 @@ Restart=on-failure
 EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill timon
 ExecStartPre=-/usr/bin/docker rm timon
-ExecStartPre=/usr/bin/docker pull connecter/timon:latest
+ExecStartPre=/usr/bin/docker pull connecter/timon:travis
 
 ExecStart=/bin/bash -c '\
   /usr/bin/docker run --rm --name timon \
