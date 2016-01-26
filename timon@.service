@@ -19,7 +19,7 @@ ExecStart=/bin/bash -c '\
   -e ZAZUWS_HOST=172.17.42.1:5280 \
   -e SITE_HOST=172.17.42.1:8001 \
   -e SSL_KEY="$(etcdctl get /ssl/connecter.io/server.pem)" \
-  connecter/timon:latest'
+  connecter/timon:travis'
 ExecStop=/usr/bin/docker stop timon
 
 [X-Fleet]
