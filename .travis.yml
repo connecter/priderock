@@ -10,7 +10,7 @@ before_install:
   -in connecter-docker.pem.enc -out connecter-docker.pem -d
 
 install:
-- scp -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no *@.service $HOSTNAME:.
+- scp -i connecter-docker.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no *.service core@$HOSTNAME:.
 
 - ssh -i connecter-docker.pem -l core -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $HOSTNAME "fleetctl stop simba@1.service && fleetctl submit simba@.service && fleetctl start simba@1.service"
 
